@@ -44,7 +44,7 @@ public class GameEngine {
 
         imageLoader = new ImageLoader();
 
-        getMapData("C:/Users/meirm/IdeaProjects/GameEngineGradle/src/main/java/engine/res/map1test.json");
+        getMapData("src/main/java/engine/res/map1test.json");
         Image image = imageLoader.getImage("unit_medium_generic.png");
 
         unitAttributeHandle = new UnitAttributeHandle();
@@ -178,7 +178,7 @@ public class GameEngine {
                 int unitX = selectedUnits.get(i).getX();
                 int unitY = selectedUnits.get(i).getY();
                 int[] local = new int[9];
-                int[][] groundLayer = getMapData("C:/Users/meirm/IdeaProjects/GameEngineGradle/src/main/java/engine/res/map1test.json").getGroundLayer();
+                int[][] groundLayer = getMapData("src/main/java/engine/res/map1test.json").getGroundLayer();
                 int index = 0;
                 for (int dy = -1; dy <= 1; dy++) {
                     for (int dx = -1; dx <= 1; dx++) {

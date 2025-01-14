@@ -6,7 +6,7 @@ import java.util.*;
 
 public class UnitAttributeHandle {
 
-    private static final String FILE_NAME = "C:/Users/meirm/IdeaProjects/GameEngineGradle/src/main/java/engine/util/unit_attributes.json";
+    private static final String FILE_NAME = "src/main/java/engine/util/unit_attributes.json";
 
     public static List<UnitAttributesData> readUnitSpeedData() {
 

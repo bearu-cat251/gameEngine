@@ -1,2 +1,2 @@
-rootProject.name = "GameEngineGradle"
+rootProject.name = "gameEngine"
 

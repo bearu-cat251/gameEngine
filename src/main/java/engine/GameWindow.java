@@ -13,8 +13,8 @@ import java.util.Map;
 public class GameWindow extends JPanel {
 
     private GameEngine gameEngine;
-    private final String map1path = "C:/Users/meirm/IdeaProjects/GameEngineGradle/src/main/java/engine/res/map1test.json";
-    private final String pathToRes = "C:/Users/meirm/IdeaProjects/GameEngineGradle/src/main/java/engine/res/";
+    private final String map1path = "src/main/java/engine/res/map1test.json";
+    private final String pathToRes = "src/main/java/engine/res/";
     private JFrame frame;
     private int currentFrame = 1;
     private final String windowTitle = "Ascension Protocol v0.0.1";
