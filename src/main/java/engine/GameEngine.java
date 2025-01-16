@@ -53,6 +53,7 @@ public class GameEngine {
         unitHandle.addUnit(new Unit("Infantry", 100, 50, 50, image));
         unitHandle.addUnit(new Unit("Infantry", 100, 100, 50, image));
         unitHandle.addUnit(new Unit("Infantry", 100, 150, 50, image));
+        unitHandle.addUnit(new Unit("Infantry", 100, 500, 400, image));
 
     }
 
