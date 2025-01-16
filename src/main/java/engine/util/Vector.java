@@ -7,7 +7,7 @@ public class Vector {
 
 
     public Vector() {}
-    public void setVector(int unitX,int unitY,int deltaX,int deltaY){
+    public void setVector(int unitX, int unitY, int deltaX, int deltaY) {
 
         dist = (int) Math.sqrt(((deltaX-unitX) * (deltaX-unitX)) + (deltaY-unitY) * (deltaY-unitY));
         dir = (int) Math.atan2(deltaY-unitY, deltaX-unitX);
@@ -16,4 +16,4 @@ public class Vector {
     public int getDist() {return dist;}
     public int getDir() {return dir;}
 
-}//bananana
+}
