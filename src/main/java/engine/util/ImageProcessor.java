@@ -1,8 +1,8 @@
 package engine.util;
 
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
+import java.math.*;
 
 public class ImageProcessor {
 
@@ -20,7 +20,7 @@ public class ImageProcessor {
         return (Image) subImage;
     }
 
-    private BufferedImage toBufferedImage(Image img) {
+    public BufferedImage toBufferedImage(Image img) {
         if (img instanceof BufferedImage) {
             return (BufferedImage) img;
         }
@@ -38,11 +38,22 @@ public class ImageProcessor {
 
         return bufferedImage;
     }
-    public BufferedImage getRotateImage(double degrees, BufferedImage img){
-        Graphics2D g2dRot = img.createGraphics();
-        g2dRot.rotate(Math.toRadians(degrees));
-        return img;
 
+    public BufferedImage rotateImage(BufferedImage img, double angle) {
+        double radians = Math.toRadians(angle);
+        int w = img.getWidth();
+        int h = img.getHeight();
+        int newWidth = (int) Math.round(w * Math.abs(Math.cos(radians)) + h * Math.abs(Math.sin(radians)));
+        int newHeight = (int) Math.round(h * Math.abs(Math.cos(radians)) + w * Math.abs(Math.sin(radians)));
+
+        BufferedImage rotatedImage = new BufferedImage(newWidth, newHeight, img.getType());
+        Graphics2D g2d = rotatedImage.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.translate((newWidth - w) / 2, (newHeight - h) / 2);
+        g2d.rotate(radians, w / 2.0, h / 2.0);
+        g2d.drawImage(img, 0, 0, null);
+        g2d.dispose();
+
+        return rotatedImage;
     }
-
 }
