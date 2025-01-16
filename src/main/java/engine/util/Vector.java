@@ -16,4 +16,4 @@ public class Vector {
     public int getDist() {return dist;}
     public int getDir() {return dir;}
 
-}
+}//bananana
