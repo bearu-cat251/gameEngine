@@ -39,7 +39,7 @@ public class ImageProcessor {
 
         return bufferedImage;
     }
-    public BufferedImage SetRotateImage(double degrees, BufferedImage img){
+    public BufferedImage setRotateImage(double degrees, BufferedImage img){
         Graphics2D g2dRot = img.createGraphics();
         g2dRot.rotate(Math.toRadians(degrees));
         return img;
