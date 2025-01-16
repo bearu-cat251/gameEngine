@@ -3,7 +3,6 @@ package engine.util;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
-import java.math.*;
 
 public class ImageProcessor {
 
@@ -39,7 +38,7 @@ public class ImageProcessor {
 
         return bufferedImage;
     }
-    public BufferedImage setRotateImage(double degrees, BufferedImage img){
+    public BufferedImage getRotateImage(double degrees, BufferedImage img){
         Graphics2D g2dRot = img.createGraphics();
         g2dRot.rotate(Math.toRadians(degrees));
         return img;

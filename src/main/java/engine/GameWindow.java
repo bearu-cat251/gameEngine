@@ -87,7 +87,7 @@ public class GameWindow extends JPanel {
                 int camX = gameEngine.getCameraX();
                 int camY = gameEngine.getCameraY();
                 int tileValue = groundLayer[i][j];
-                g.drawImage((Image) imageProcessor.setRotateImage(45,(BufferedImage) (intToImage(tileValue))), (j*64)-camX, (i*64)-camY, null);
+                g.drawImage((intToImage(tileValue)), (j*64)-camX, (i*64)-camY, null);
             }
 
 
