@@ -172,6 +172,7 @@ public class GameEngine {
     public void setMouseLocation(int x, int y) {
         mouseX = x;
         mouseY = y;
+        //System.out.println("Mouse X: " + mouseX + ", Mouse Y: " + mouseY);
     }
     public void moveUnits(int goalX, int goalY) {
         if (inputHandle.isGPressed()) {
@@ -192,11 +193,14 @@ public class GameEngine {
                         index++;
                     }
                 }
-                for(int tile : local) {
-                    System.out.println(tile + " ");
-                }
+
+                for(int tile : local) {System.out.println(tile + " ");}
+
                 System.out.println(selectedUnits.get(i).getType() + " moved");
-                selectedUnits.get(i).moveTo(goalX, goalY, local);
+                Vector vector = new Vector();
+                System.out.println(vector.getDir() + " " + vector.getDist());
+                vector.setVector(selectedUnits.get(i).getX(), selectedUnits.get(i).getY(), goalX, goalY);
+                selectedUnits.get(i).moveTo(vector, local);
             }
         }
     }

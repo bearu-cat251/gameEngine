@@ -62,6 +62,13 @@ public class GameWindow extends JPanel {
             }
         });
 
+        this.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+                gameEngine.setMouseLocation(e.getX(), e.getY());
+            }
+        });
 
         createAndShowWindow();
     }

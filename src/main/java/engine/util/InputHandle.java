@@ -1,5 +1,7 @@
 package engine.util;
 
+import engine.GameEngine;
+
 import javax.swing.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -64,7 +66,7 @@ public class InputHandle extends KeyAdapter {
             System.out.println("D key released");
         }
         if (keyCode == KeyEvent.VK_G) {
-            gPressed = false;
+
             System.out.println("G key released");
         }
     }

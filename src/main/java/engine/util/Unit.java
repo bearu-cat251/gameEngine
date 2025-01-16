@@ -8,6 +8,8 @@ public class Unit {
     private int x, y, health;
     private Image image;
     private PathHandle pathHandle;
+    private Vector currentVector;
+    private int direction;
 
     public Unit(String type, int initHealth, int x, int y, Image image) {
 
@@ -21,6 +23,9 @@ public class Unit {
     }
 
 
+    public void setCurrentVector(Vector vector) {currentVector = vector;}
+    public void setDirection(int dir) {direction = dir;}
+    public Vector getCurrentVector() {return currentVector;}
     public int getX() {return x;}
     public int getY() {return y;}
     public int getInitHealth() {return health;}
@@ -31,19 +36,15 @@ public class Unit {
     public void setType(String type) {this.type = type;}
     public void setPos(int x, int y) {this.x = x; this.y = y;}
     public Image getImage() {return image;}
-    public void moveTo(int goalX, int goalY, int[] map) {
-        double currentX = x;
-        double currentY = y;
-        double deltaX = goalX - currentX;
-        double deltaY = goalY - currentY;
+    public void moveTo(Vector vector, int[] map) {
+        setDirection((vector.getDir() + 360) % 360);
+        System.out.println(vector.getDir());
+        double angleRadians = Math.toRadians(direction);
+        double xMovement = vector.getDist() * Math.cos(angleRadians);
+        double yMovement = vector.getDist() * Math.sin(angleRadians);
 
-        double angleRadians = Math.atan2(deltaY, deltaX);
-        double angleDegrees = Math.toDegrees(angleRadians);
-        if (angleDegrees < 0) {
-            angleDegrees += 360;
-        }
-        if(pathHandle.isMovementPossible(map , (int) angleDegrees)) {
+        setX(x + (int) xMovement);
+        setY(y + (int) yMovement);
 
-        }
     }
 }
