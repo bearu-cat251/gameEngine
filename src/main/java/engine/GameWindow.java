@@ -87,7 +87,7 @@ public class GameWindow extends JPanel {
                 int camX = gameEngine.getCameraX();
                 int camY = gameEngine.getCameraY();
                 int tileValue = groundLayer[i][j];
-                g.drawImage((intToImage(tileValue)), (j*64)-camX, (i*64)-camY, null);
+                g.drawImage(imageProcessor.toBufferedImage(intToImage(tileValue)), (j*64)-camX, (i*64)-camY, null);
             }
 
 
@@ -99,8 +99,9 @@ public class GameWindow extends JPanel {
             Unit unit = gameEngine.getUnit(i);
             Image img = unit.getImage();
             int width = img.getWidth(null);
-            g.drawImage(imageProcessor.getSubImage(img, currentFrame%(width/32)*32, 0, 32, 32), unit.getX()-camX, unit.getY()-camY, null);
-
+            if(width != 0) {
+                g.drawImage(imageProcessor.rotateImage(imageProcessor.toBufferedImage(imageProcessor.getSubImage(img, currentFrame % (width / 32) * 32, 0, 32, 32)), 30), unit.getX() - camX, unit.getY() - camY, null);
+            }
         }
         if (gameEngine.checkMouseDrag()) {
 
