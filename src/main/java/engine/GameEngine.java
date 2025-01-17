@@ -28,19 +28,21 @@ public class GameEngine {
     private static long timePerFrame = NANOSECONDS_IN_SECOND / TARGET_FPS;
 
     private int cameraX = 0,cameraY = 0;
-    private UnitHandle unitHandle;
+    public UnitHandle unitHandle;
     private UnitAttributeHandle unitAttributeHandle;
 
     private InputHandle inputHandle;
     private boolean mousePressed = false;
-    private int startMouseX, startMouseY, currentMouseX, currentMouseY;
     private int slcX = 0, slcY = 0, slcWidth = 0, slcHeight = 0;
     private boolean selecting = false;
     private int mouseX = 0, mouseY = 0;
+    public Controls controls;
+    public GameLogic gameLogic;
 
     private ImageLoader imageLoader;
 
     public GameEngine() {
+
 
         imageLoader = new ImageLoader();
 
@@ -60,7 +62,9 @@ public class GameEngine {
     public void setGameWindow(GameWindow gameWindow) {
 
         this.gameWindow = gameWindow;
-        inputHandle = new InputHandle(gameWindow.getFrame());
+        inputHandle = new InputHandle(gameWindow.getFrame(), this);
+        gameLogic = new GameLogic(this);
+        controls = new Controls(gameWindow.getFrame(), this);
     }
 
     public void run() {
@@ -101,10 +105,8 @@ public class GameEngine {
     }
 
     public void update() {
-        moveCamera();
-        moveUnits(mouseX, mouseY);
+        gameLogic.update();
      }
-
 
     public void render() {gameWindow.repaint();}
 
@@ -119,89 +121,41 @@ public class GameEngine {
 
     public int getCameraX() {return cameraX;}
     public int getCameraY() {return cameraY;}
+    public void setCameraX(int x) {cameraX = x;}
+    public void setCameraY(int y) {cameraY = y;}
+    public void changeCameraX(int speed) {cameraX = cameraX + speed;}
+    public void changeCameraY(int speed) {cameraY = cameraY + speed;}
 
-    public void moveCamera() {
-        if(inputHandle.isAPressed()) {cameraX = cameraX-camSpeed;}
-        if(inputHandle.isDPressed()) {cameraX = cameraX+camSpeed;}
-        if(inputHandle.isSPressed()) {cameraY = cameraY+camSpeed;}
-        if(inputHandle.isWPressed()) {cameraY = cameraY-camSpeed;}
-    }
-
-    public void setMousePressed(boolean pressed) {this.mousePressed = pressed;}
-
-
-
-    public boolean isMousePressed() {return mousePressed;}
-
-    public void setStartMousePosition(int x, int y) {
-        this.startMouseX = x;
-        this.startMouseY = y;
-        this.currentMouseX = x;
-        this.currentMouseY = y;
-    }
-
-    public void updateMouseDrag(int x, int y) {
-        this.currentMouseX = x;
-        this.currentMouseY = y;
-    }
+    public Controls getControls() {return controls;}
 
     public void setSelectingArea(int x, int y, int width, int height) {
-        slcX = x;
-        slcY = y;
+        slcX = x - cameraX;
+        slcY = y - cameraY;
         slcWidth = width;
         slcHeight = height;
     }
+
+    public List<Unit> getSelectedUnits() {return selectedUnits;}
     public void setSelecting(boolean selecting) {this.selecting = selecting;}
     public void setSelectedUnits() {
-        for(int i = 0; i < unitHandle.getUnits().size(); i++) {
-            int unitX = unitHandle.getUnitX(i);
-            int unitY = unitHandle .getUnitY(i);
-            if(unitX > slcX && unitY > slcY && unitX < slcX + slcWidth && unitY < slcY + slcHeight) {
-                selectedUnits.add(unitHandle.getUnit(i));
-                System.out.println(unitHandle.getUnit(i).getType());
-            } else {if(!selectedUnits.isEmpty()) {selectedUnits.remove(unitHandle.getUnit(i));}}
-        }
-
-    }
-
-    public boolean checkMouseDrag() {return mousePressed;}
-    public int getMouseX() {return startMouseX;}
-    public int getMouseY() {return startMouseY;}
-    public int getMouseDragX() {return currentMouseX - startMouseX;}
-    public int getMouseDragY() {return currentMouseY - startMouseY;}
-    public void setMouseLocation(int x, int y) {
-        mouseX = x;
-        mouseY = y;
-        //System.out.println("Mouse X: " + mouseX + ", Mouse Y: " + mouseY);
-    }
-    public void moveUnits(int goalX, int goalY) {
-        if (inputHandle.isGPressed()) {
-            for (int i = 0; i < selectedUnits.size(); i++) {
-                int unitX = selectedUnits.get(i).getX();
-                int unitY = selectedUnits.get(i).getY();
-                int[] local = new int[9];
-                int[][] groundLayer = getMapData("src/main/java/engine/res/map1test.json").getGroundLayer();
-                int index = 0;
-                for (int dy = -1; dy <= 1; dy++) {
-                    for (int dx = -1; dx <= 1; dx++) {
-                        int neighborX = unitX + dx;
-                        int neighborY = unitY + dy;
-
-                        if (neighborX >= 0 && neighborX < groundLayer.length && neighborY >= 0 && neighborY < groundLayer[0].length) {
-                            local[index] = groundLayer[neighborY][neighborX];
-                        } else {local[index] = -1;}
-                        index++;
+        if(selecting) {
+            for (int i = 0; i < unitHandle.getUnits().size(); i++) {
+                int unitX = unitHandle.getUnitX(i) - cameraX;
+                int unitY = unitHandle.getUnitY(i) - cameraY;
+                if (unitX > slcX && unitY > slcY && unitX < slcX + slcWidth && unitY < slcY + slcHeight) {
+                    selectedUnits.add(unitHandle.getUnit(i));
+                    System.out.println(unitHandle.getUnit(i).getType());
+                } else {
+                    if (!selectedUnits.isEmpty()) {
+                        selectedUnits.remove(unitHandle.getUnit(i));
                     }
+
                 }
 
-                for(int tile : local) {System.out.println(tile + " ");}
-
-                System.out.println(selectedUnits.get(i).getType() + " moved");
-                Vector vector = new Vector();
-                System.out.println(vector.getDir() + " " + vector.getDist());
-                vector.setVector(selectedUnits.get(i).getX(), selectedUnits.get(i).getY(), goalX, goalY);
-                selectedUnits.get(i).moveTo(vector, local);
             }
+
         }
+
     }
+
 }

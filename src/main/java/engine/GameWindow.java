@@ -6,9 +6,6 @@ import engine.util.Unit;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
 public class GameWindow extends JPanel {
@@ -25,50 +22,7 @@ public class GameWindow extends JPanel {
 
         this.gameEngine = gameEngine;
         this.setPreferredSize(new Dimension(1280, 720));
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                gameEngine.setMousePressed(true);
-                gameEngine.setStartMousePosition(e.getX(), e.getY());
-            }
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                gameEngine.setSelectedUnits();
-                gameEngine.setMousePressed(false);
-                gameEngine.setStartMousePosition(e.getX(), e.getY());
-
-
-                int deltaX = Math.abs(gameEngine.getMouseDragX());
-                int deltaY = Math.abs(gameEngine.getMouseDragY());
-                if (deltaX < 5 && deltaY < 5) {
-                    System.out.println("Mouse clicked at: " + e.getX() + ", " + e.getY());
-
-                } else {
-                    System.out.println("Mouse drag ended.");
-                    gameEngine.setSelecting(false);
-
-                }
-            }
-        });
-        this.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-
-                if (gameEngine.isMousePressed()) {
-                    gameEngine.updateMouseDrag(e.getX(), e.getY());
-
-                }
-            }
-        });
-
-        this.addMouseMotionListener(new MouseAdapter() {
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                super.mouseMoved(e);
-                gameEngine.setMouseLocation(e.getX(), e.getY());
-            }
-        });
 
         createAndShowWindow();
     }
@@ -110,13 +64,13 @@ public class GameWindow extends JPanel {
                 g.drawImage(imageProcessor.rotateImage(imageProcessor.toBufferedImage(imageProcessor.getSubImage(img, currentFrame % (width / 32) * 32, 0, 32, 32)), 30), unit.getX() - camX, unit.getY() - camY, null);
             }
         }
-        if (gameEngine.checkMouseDrag()) {
 
-            int startX = gameEngine.getMouseX();
-            int startY = gameEngine.getMouseY();
-            int currentX = gameEngine.getMouseX() + gameEngine.getMouseDragX();
-            int currentY = gameEngine.getMouseY() + gameEngine.getMouseDragY();
+        if(gameEngine.controls.getMousePressed() && (gameEngine.controls.getMouseDragX() != 0 || gameEngine.controls.getMouseDragY() != 0)) {
 
+            int startX = gameEngine.controls.getMouseX();
+            int startY = gameEngine.controls.getMouseY();
+            int currentX = gameEngine.controls.getMouseDragX() - gameEngine.getCameraX();
+            int currentY = gameEngine.controls.getMouseDragY() - gameEngine.getCameraY();
 
             int x = Math.min(startX, currentX);
             int y = Math.min(startY, currentY);
@@ -128,7 +82,8 @@ public class GameWindow extends JPanel {
             g.setColor(new Color(10, 255, 10, 255));
             g.drawRect(x, y, width, height);
             g.setColor(new Color(10, 255, 10, 60));
-            g.fillRect(x+1, y+1, width-1, height-1);
+            g.fillRect(x + 1, y + 1, width - 1, height - 1);
+
         }
 
         currentFrame++;
