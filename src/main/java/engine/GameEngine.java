@@ -28,6 +28,8 @@ public class GameEngine {
     private static long timePerFrame = NANOSECONDS_IN_SECOND / TARGET_FPS;
 
     private int cameraX = 0,cameraY = 0;
+    private int lastCamX = cameraX;
+    private int lastCamY = cameraY;
     public UnitHandle unitHandle;
     private UnitAttributeHandle unitAttributeHandle;
 
@@ -63,8 +65,9 @@ public class GameEngine {
 
         this.gameWindow = gameWindow;
         inputHandle = new InputHandle(gameWindow.getFrame(), this);
-        gameLogic = new GameLogic(this);
         controls = new Controls(gameWindow.getFrame(), this);
+        gameLogic = new GameLogic(this);
+
     }
 
     public void run() {
@@ -121,8 +124,8 @@ public class GameEngine {
 
     public int getCameraX() {return cameraX;}
     public int getCameraY() {return cameraY;}
-    public void setCameraX(int x) {cameraX = x;}
-    public void setCameraY(int y) {cameraY = y;}
+    public void setCameraX(int x) {lastCamX = cameraX; cameraX = x;}
+    public void setCameraY(int y) {lastCamY = cameraY; cameraY = y;}
     public void changeCameraX(int speed) {cameraX = cameraX + speed;}
     public void changeCameraY(int speed) {cameraY = cameraY + speed;}
 

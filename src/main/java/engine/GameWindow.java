@@ -67,10 +67,13 @@ public class GameWindow extends JPanel {
 
         if(gameEngine.controls.getMousePressed() && (gameEngine.controls.getMouseDragX() != 0 || gameEngine.controls.getMouseDragY() != 0)) {
 
-            int startX = gameEngine.controls.getMouseX();
-            int startY = gameEngine.controls.getMouseY();
-            int currentX = gameEngine.controls.getMouseDragX() - gameEngine.getCameraX();
-            int currentY = gameEngine.controls.getMouseDragY() - gameEngine.getCameraY();
+            int camX = gameEngine.getCameraX();
+            int camY = gameEngine.getCameraY();
+
+            int startX = gameEngine.controls.getMouseX() - camX;
+            int startY = gameEngine.controls.getMouseY() - camY;
+            int currentX = gameEngine.getCameraX();
+            int currentY = gameEngine.getCameraY();
 
             int x = Math.min(startX, currentX);
             int y = Math.min(startY, currentY);

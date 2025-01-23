@@ -16,6 +16,7 @@ public class Controls extends MouseAdapter {
     private int lastClickX, lastClickY;
     private boolean mousePressed;
     private GameEngine engine;
+    private boolean W = false, A = false, S = false, D = false;
 
     public Controls(JFrame frame, GameEngine engine) {
         this.engine = engine;
@@ -73,15 +74,43 @@ public class Controls extends MouseAdapter {
     public int getLastClickY() {return lastClickY;}
     public boolean getMousePressed() {return mousePressed;}
 
+
     public void setKeyPressed(int keyCode) {
 
+        if(keyCode == KeyEvent.VK_W) {
+            W = true;
+        }
+        if(keyCode == KeyEvent.VK_A) {
+            A = true;
+        }
+        if(keyCode == KeyEvent.VK_S) {
+            S = true;
+        }
+        if(keyCode == KeyEvent.VK_D) {
+            D = true;
+        }
         if(keyCode == KeyEvent.VK_G) {
             engine.gameLogic.moveUnits();
         }
     }
-    public void setKeyReleased(int keyCode) {
-        if(keyCode == KeyEvent.VK_G) {
 
+    public boolean getW() {return W;}
+    public boolean getS() {return S;}
+    public boolean getA() {return A;}
+    public boolean getD() {return D;}
+    public void setKeyReleased(int keyCode) {
+
+        if(keyCode == KeyEvent.VK_W) {
+            W = false;
+        }
+        if(keyCode == KeyEvent.VK_A) {
+            A = false;
+        }
+        if(keyCode == KeyEvent.VK_S) {
+            S = false;
+        }
+        if(keyCode == KeyEvent.VK_D) {
+            D = false;
         }
     }
 }

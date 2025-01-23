@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 
 public class InputHandle extends KeyAdapter {
     private GameEngine engine;
+    private int keyCode;
     public InputHandle(JFrame frame, GameEngine engine) {
         frame.addKeyListener(this);
         this.engine = engine;
