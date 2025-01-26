@@ -46,7 +46,8 @@ public class Controls extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         super.mousePressed(e);
-        camera.drag(camera.getX(), camera.getY());
+        camera.setOrigin(camera.getX(), camera.getY());
+        camera.setDragging(true);
         mousePressed = true;
     }
 
@@ -54,20 +55,23 @@ public class Controls extends MouseAdapter {
     public void mouseReleased(MouseEvent e) {
         super.mouseReleased(e);
         mousePressed = false;
-        camera.drag(camera.getX(), camera.getY());
+        camera.setOrigin(camera.getX(), camera.getY());
+        camera.setDragging(false);
         mouseDragX = 0;
         mouseDragY = 0;
     }
 
-    public int getMouseX() {
-        return camera.getMapX(mouseX);
+    public int getMouseX() {return mouseX - camera.getDragX();}
+
+    public int getMouseY() {return mouseY - camera.getDragY();}
+
+    public int getTotalDragX() {
+        return mouseDragX;
     }
 
-    public int getMouseY() {return camera.getMapY(mouseY);}
-
-    public int getTotalDragX() {return camera.getMapX(mouseDragX + camera.getDragX());}
-
-    public int getTotalDragY() {return camera.getMapY(mouseDragY + camera.getDragY());}
+    public int getTotalDragY() {
+        return mouseDragY;
+    }
     public int getLastClickX() {return lastClickX;}
     public int getLastClickY() {return lastClickY;}
     public boolean getMousePressed() {return mousePressed;}

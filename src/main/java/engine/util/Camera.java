@@ -4,15 +4,20 @@ public class Camera {
 
     private int x, y;
     private int startX, startY;
+    private boolean isDragging;
 
     public Camera(int x, int y) {
 
         this.x = x;
         this.y = y;
+        isDragging = false;
 
     }
-
-    public void drag(int x, int y) {startX = x; startY = y;}
+    public boolean isDragging() {return isDragging;}
+    public void setDragging(boolean isDragging) {this.isDragging = isDragging;}
+    public void setOrigin(int x, int y) {startX = x; startY = y;}
+    public int getOriginX() {return startX;}
+    public int getOriginY() {return startY;}
     public int getDragX() {return x - startX;}
     public int getDragY() {return y - startY;}
     public int getMapX(int posX) {return posX - x;}
