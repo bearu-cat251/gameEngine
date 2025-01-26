@@ -16,12 +16,14 @@ public class Controls extends MouseAdapter {
     private int lastClickX, lastClickY;
     private boolean mousePressed;
     private GameEngine engine;
+    private Camera camera;
     private boolean W = false, A = false, S = false, D = false;
 
     public Controls(JFrame frame, GameEngine engine) {
         this.engine = engine;
         frame.addMouseListener(this);
         frame.addMouseMotionListener(this);
+        camera = engine.getCamera();
     }
 
     @Override
@@ -44,6 +46,7 @@ public class Controls extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         super.mousePressed(e);
+        camera.drag(camera.getX(), camera.getY());
         mousePressed = true;
     }
 
@@ -51,25 +54,20 @@ public class Controls extends MouseAdapter {
     public void mouseReleased(MouseEvent e) {
         super.mouseReleased(e);
         mousePressed = false;
+        camera.drag(camera.getX(), camera.getY());
         mouseDragX = 0;
         mouseDragY = 0;
     }
 
     public int getMouseX() {
-        return mouseX;
+        return camera.getMapX(mouseX);
     }
 
-    public int getMouseY() {
-        return mouseY;
-    }
+    public int getMouseY() {return camera.getMapY(mouseY);}
 
-    public int getMouseDragX() {
-        return mouseDragX;
-    }
+    public int getTotalDragX() {return camera.getMapX(mouseDragX + camera.getDragX());}
 
-    public int getMouseDragY() {
-        return mouseDragY;
-    }
+    public int getTotalDragY() {return camera.getMapY(mouseDragY + camera.getDragY());}
     public int getLastClickX() {return lastClickX;}
     public int getLastClickY() {return lastClickY;}
     public boolean getMousePressed() {return mousePressed;}

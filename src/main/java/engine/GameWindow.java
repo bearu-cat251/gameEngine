@@ -23,7 +23,6 @@ public class GameWindow extends JPanel {
         this.gameEngine = gameEngine;
         this.setPreferredSize(new Dimension(1280, 720));
 
-
         createAndShowWindow();
     }
 
@@ -65,15 +64,13 @@ public class GameWindow extends JPanel {
             }
         }
 
-        if(gameEngine.controls.getMousePressed() && (gameEngine.controls.getMouseDragX() != 0 || gameEngine.controls.getMouseDragY() != 0)) {
+        if(gameEngine.controls.getMousePressed() && (gameEngine.controls.getTotalDragX() != 0 || gameEngine.controls.getTotalDragY() != 0)) {
 
-            int camX = gameEngine.getCameraX();
-            int camY = gameEngine.getCameraY();
 
-            int startX = gameEngine.controls.getMouseX() - camX;
-            int startY = gameEngine.controls.getMouseY() - camY;
-            int currentX = gameEngine.getCameraX();
-            int currentY = gameEngine.getCameraY();
+            int startX = gameEngine.controls.getMouseX();
+            int startY = gameEngine.controls.getMouseY();
+            int currentX = gameEngine.controls.getTotalDragX();
+            int currentY = gameEngine.controls.getTotalDragY();
 
             int x = Math.min(startX, currentX);
             int y = Math.min(startY, currentY);

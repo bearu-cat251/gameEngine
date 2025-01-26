@@ -19,7 +19,6 @@ public class GameEngine {
     private static int fps = 0;
     private static int ups = 0;
 
-    private final int camSpeed = 6;
     private int loops;
 
     private List<Unit> selectedUnits;
@@ -27,17 +26,13 @@ public class GameEngine {
     private static long timePerUpdate = NANOSECONDS_IN_SECOND / TARGET_UPS;
     private static long timePerFrame = NANOSECONDS_IN_SECOND / TARGET_FPS;
 
-    private int cameraX = 0,cameraY = 0;
-    private int lastCamX = cameraX;
-    private int lastCamY = cameraY;
+    private Camera camera;
     public UnitHandle unitHandle;
     private UnitAttributeHandle unitAttributeHandle;
 
     private InputHandle inputHandle;
-    private boolean mousePressed = false;
     private int slcX = 0, slcY = 0, slcWidth = 0, slcHeight = 0;
     private boolean selecting = false;
-    private int mouseX = 0, mouseY = 0;
     public Controls controls;
     public GameLogic gameLogic;
 
@@ -65,6 +60,7 @@ public class GameEngine {
 
         this.gameWindow = gameWindow;
         inputHandle = new InputHandle(gameWindow.getFrame(), this);
+        camera = new Camera(0, 0);
         controls = new Controls(gameWindow.getFrame(), this);
         gameLogic = new GameLogic(this);
 
@@ -122,18 +118,20 @@ public class GameEngine {
         return mapData;
     }
 
-    public int getCameraX() {return cameraX;}
-    public int getCameraY() {return cameraY;}
-    public void setCameraX(int x) {lastCamX = cameraX; cameraX = x;}
-    public void setCameraY(int y) {lastCamY = cameraY; cameraY = y;}
-    public void changeCameraX(int speed) {cameraX = cameraX + speed;}
-    public void changeCameraY(int speed) {cameraY = cameraY + speed;}
+    public Camera getCamera() {return camera;}
+
+    public int getCameraX() {return camera.getX();}
+    public int getCameraY() {return camera.getY();}
+    public void setCameraX(int x) {camera.setX(x);}
+    public void setCameraY(int y) {camera.setY(y);}
+    public void changeCameraX(int speed) {camera.setX(camera.getX() + speed);}
+    public void changeCameraY(int speed) {camera.setY(camera.getY() + speed);}
 
     public Controls getControls() {return controls;}
 
     public void setSelectingArea(int x, int y, int width, int height) {
-        slcX = x - cameraX;
-        slcY = y - cameraY;
+        slcX = x;
+        slcY = y;
         slcWidth = width;
         slcHeight = height;
     }
@@ -143,8 +141,8 @@ public class GameEngine {
     public void setSelectedUnits() {
         if(selecting) {
             for (int i = 0; i < unitHandle.getUnits().size(); i++) {
-                int unitX = unitHandle.getUnitX(i) - cameraX;
-                int unitY = unitHandle.getUnitY(i) - cameraY;
+                int unitX = unitHandle.getUnitX(i) - camera.getX();
+                int unitY = unitHandle.getUnitY(i) - camera.getY();
                 if (unitX > slcX && unitY > slcY && unitX < slcX + slcWidth && unitY < slcY + slcHeight) {
                     selectedUnits.add(unitHandle.getUnit(i));
                     System.out.println(unitHandle.getUnit(i).getType());
